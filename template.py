@@ -12,7 +12,8 @@ from PIL.ImageStat import Stat
 
 base_dir = sys.argv[1]
 template_image_file_in = sys.argv[2]
-image_file_out = sys.argv[3]
+seed = int(sys.argv[3])
+image_file_out = sys.argv[4]
 
 buckets = defaultdict(list)
 
@@ -36,7 +37,7 @@ for bucket in sorted(buckets.keys()):
     print("{}: {}".format(bucket, len(images)))
 
 template_image = Image.open(template_image_file_in)
-grid = (40, 30)
+grid = (40, 40)
 scaled_template_image = template_image.resize(grid, resample=PIL.Image.BICUBIC)
 
 base_width, base_height = (180, 200)
@@ -45,7 +46,7 @@ grid_width, grid_height = grid
 final_image_size = (grid_width * base_width, grid_height * base_height)
 final_image = Image.new('RGB', final_image_size, (0, 0, 0))
 
-random.seed(1)
+random.seed(seed)
 
 min_bucket, max_bucket = min(buckets.keys()), max(buckets.keys())
 bucket_range = max_bucket - min_bucket
